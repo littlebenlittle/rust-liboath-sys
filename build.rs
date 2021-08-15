@@ -4,10 +4,13 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    println!("cargo:rustc-link-lib=liboath");
-    println!("cargo:rerun-if-changed=liboath.h");
+    println!("cargo:rustc-link-lib=oath");
+    // println!("cargo:include=/usr/include/liboath");
+    println!("cargo:rerun-if-changed=wrapper.h");
     let bindings = bindgen::Builder::default()
-        .header("liboath.h")
+        .header("wrapper.h")
+        .clang_arg("-I/usr/include/liboath")
+        .clang_arg("--verbose")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
         .expect("Unable to generate bindings");
